@@ -40,6 +40,11 @@ body {
   padding: 0 8px;
 }
 
+a {
+  color: inherit; /* blue colors for links too */
+  text-decoration: inherit; /* no underline */
+}
+
 a.svg:after {
   content: "";
   position: absolute;
@@ -58,4 +63,11 @@ a.svg {
   color: #9a9a9a;
   margin-top: 35px;
   font-weight: 300;
+}
+
+.main h2.blog-msg {
+  color: #333;
+  max-width: 500px;
+  margin:auto;
+  /*font-weight: 400;*/
 }
