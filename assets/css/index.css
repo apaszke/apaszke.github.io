@@ -1,0 +1,61 @@
+* {
+  margin:0;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: #f3f3f3;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.main {
+  position: relative;
+  top:35%;
+  height: 200px;
+  width: 90%;
+  margin: 0 auto;
+  text-align:center;
+}
+
+.main h1 {
+  font-weight: 300;
+  color: #777;
+  font-size: 40px;
+}
+
+.main h2 {
+  font-weight: 300;
+  color: #9a9a9a;
+  font-size: 20px;
+}
+
+.social-icons {
+  margin-top: 10px;
+}
+
+.social-icons object {
+  padding: 0 8px;
+}
+
+a.svg:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+a.svg {
+  position: relative;
+  display: inline-block;
+}
+
+.under-construction {
+  color: #9a9a9a;
+  margin-top: 35px;
+  font-weight: 300;
+}

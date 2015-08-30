@@ -1,0 +1,48 @@
+---
+---
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
+    <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+
+    <link rel="stylesheet" href="{{ "/assets/css/index.css" | prepend: site.baseurl }}">
+    <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
+    <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}" />
+
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+  </head>
+
+  <!--
+  $('#twitter').contentDocument.getElementById("Evil-Icons").setAttributeNS(null, "fill", "#aff")
+  -->
+  <body>
+    <div class="main">
+      <h1>Adam Paszke</h1>
+      <h2>Machine Learning &cap; Programming &cap; Math</h2>
+      <div class="social-icons">
+        <a class="svg" href="https://github.com/apaszke">
+          <object type="image/svg+xml" data="assets/img/github.svg" id="github"></object>
+        </a>
+        <a class="svg" href="https://pl.linkedin.com/in/apaszke/en">
+          <object type="image/svg+xml" data="assets/img/linkedin.svg" id="linkedin"></object>
+        </a>
+        <a class="svg" href="https://twitter.com/apaszke">
+          <object type="image/svg+xml" data="assets/img/twitter.svg" id="twitter"></object>
+        </a>
+        <a class="svg" href="mailto:adam.paszke@gmail.com">
+          <object type="image/svg+xml" data="assets/img/envelope.svg" id="mail"></object>
+        </a>
+      </div>
+      <div class="under-construction">
+        This website is currently under construction...
+      </div>
+    </div>
+  </body>
+
+</html>
