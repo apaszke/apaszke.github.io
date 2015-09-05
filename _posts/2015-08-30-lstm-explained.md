@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "LSTM networks explained"
+title:  "LSTM implementation explained"
 date:   2015-08-30 20:04:15
 ---
 
