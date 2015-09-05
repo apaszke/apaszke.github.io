@@ -10,7 +10,7 @@ They seemed to be complicated and I've never done anything with them before.
 Quick googling didn't help, as all I've found were some slides.
 
 Fortunately, I took part in [Kaggle EEG Competition](https://www.kaggle.com/c/grasp-and-lift-eeg-detection) and thought that it might be fun
-to use LSTMs and finally learn how they work. I based my solution and this post's code on [char-rnn](https://github.com/karpathy/char-rnn)
+to use LSTMs and finally learn how they work. I based [my solution](https://github.com/apaszke/kaggle-grasp-and-lift) and this post's code on [char-rnn](https://github.com/karpathy/char-rnn)
 by [Andrej Karpathy](https://karpathy.github.io),
 which I highly recommend you to check out.
 
@@ -32,9 +32,10 @@ kept in the network. It's provided as a part of the input!
 
 ### LSTM refresher
 
-> Note: this section is unfinished and will definitely change during the next few days
+This section will cover only the formal definition of LSTMs. There are lots of other nice
+blog posts describing in detail how can you imagine and think of these equations.
 
-There are many variations of this model,
+LSTMs have many variations,
 but we'll stick to a simple one. One cell consists of three gates (input, forget, output),
 and a cell unit. Gates use a sigmoid activation, while input and cell state is often
 transformed with tanh. LSTM cell can be defined with a following set of equations:
@@ -57,13 +58,19 @@ $$c_{t} = f_{t} \cdot c_{t-1} + i_{t} \cdot c\_in_{t}$$
 
 $$h_{t} = o_{t} \cdot tanh(c_{t})$$
 
+It can be pictured like this:
+
+<div class="images">
+  <img alt="LSTM cell diagram" src="assets/posts/lstm-explained/cell.svg" style="width: 40%">
+</div>
+
 Because of the gating mechanism the cell can keep a piece of information for long
 periods of time during work and protect the gradient inside the cell from harmful changes during the training.
 Vanilla LSTMs don't have a forget gate and add unchanged cell state
-during it's update (it can be seen as a recurrent connection with a constant weight of 1),
+during the update (it can be seen as a recurrent connection with a constant weight of 1),
 what is often referred to as a Constant Error Carousel (CEC).
-It's called like that, because it solves a serious RNN training problem of vanishing or exploding gradients,
-which in turn makes it possible to learn long-term dependencies.
+It's called like that, because it solves a serious RNN training problem of vanishing and exploding gradients,
+which in turn makes it possible to learn long-term relationships.
 
 ## Building your own LSTM layer
 The code for this tutorial will be using Torch7.
@@ -228,8 +235,7 @@ taking `next_h` from previous layer as next layer's input. You can check [this e
 
 ### Training
 
-This is material for another blog post! If you're interested please leave a comment
-and I'll try to write it soon!
+If you're interested please leave a comment and I'll try to expand this post!
 
 ## That's it!
 
