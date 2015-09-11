@@ -87,8 +87,8 @@ We will need the following layers:
 * `nn.Narrow(dim, start, len)` - selects a subvector along `dim` dimension having `len` elements starting from `start` index
 * `nn.Sigmoid()` - applies sigmoid element-wise
 * `nn.Tanh()` - applies tanh element-wise
-* `nn.CMulTable()` - outputs the sum of tensors in forwarded table
-* `nn.CAddTable()` - outputs the product of tensors in forwarded table
+* `nn.CMulTable()` - outputs the product of tensors in forwarded table
+* `nn.CAddTable()` - outputs the sum of tensors in forwarded table
 
 ### Inputs
 
