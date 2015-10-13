@@ -4,6 +4,8 @@ title:  "A quick tour of Torch internals"
 date:   2015-10-12 20:05:24
 ---
 
+> This post is nearly finished, but it still requires some work. It should be ready soon.
+
 Recently I have been kind of confused. I couldn't find myself
 anything to work on and had no ideas for new projects (apparently I had to wait
 for the new academic year to start, when I don't have much time to work on them).
