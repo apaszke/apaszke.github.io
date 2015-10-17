@@ -4,8 +4,6 @@ title:  "A quick tour of Torch internals"
 date:   2015-10-12 20:05:24
 ---
 
-> This post is nearly finished, but it still requires some work. It should be ready soon.
-
 Recently I have been kind of confused. I couldn't find myself
 anything to work on and had no ideas for new projects (apparently I had to wait
 for the new academic year to start, when I don't have much time to work on them).
@@ -13,13 +11,13 @@ for the new academic year to start, when I don't have much time to work on them)
 Anyway, I often get the impression that many people are using Machine
 Learning libraries as kind of black-boxes with only a high-level API. It's as if they
 weren't interested in how they work, but solely in the output (this is why I like
-torch so much - it's hackable to the bone). I've been using torch for a few months
+Torch so much - it's hackable to the bone). I've been using Torch for a few months
 now and I've always been curious how it's built. This is why I decided to get
-down to it and browse the code of TH library, which is at the core of torch.
+down to it and browse the code of TH library, which is at the core of Torch.
 
 It's really a great thing to do. I'll write more about it in the end of this post,
-but you should seriously consider doing this too, with your favourite library
-or framework.
+but you should seriously consider doing this with your favourite library
+or framework too.
 
 Torch's source is written in plain C, which was very pleasing for me. I don't
 really like many C++ features and although I find it very powerful and flexible,
@@ -101,11 +99,11 @@ and this is what this piece archieves! In generic files you can see
 variables of type `real` all over the place. At first it was obvious to me that
 it's probably a matter of some compile time optimizations wether it was chosen to
 be a float or a double, but apparently it's different - it allows code generation
-for other types!
+for many other types too!
 
 <div style="height: 17px"></div>
 
-Clever use of macros also makes the generic files more readable.
+Clever usage of macros also makes the generic files more readable.
 Take this example from `generic/THStorage.c`:
 
 {% highlight c %}
@@ -165,9 +163,10 @@ struct THFileVTable
 };
 {% endhighlight %}
 
-You can see that it defines a virtual table with methods that File subclasses will
-have to implement, because `THFile` is an abstract class (it has no constructors).
-Other structs are defined as such:
+You can see that it defines a [virtual method table](https://en.wikipedia.org/wiki/Virtual_method_table)
+with pointers to funcions that `THFile` subclasses will have to implement
+(`THFile` is an abstract class - it has no constructors). Other structs are
+defined as such:
 
 {% highlight c %}
 typedef struct THDiskFile__
@@ -181,9 +180,9 @@ typedef struct THDiskFile__
 } THDiskFile;
 {% endhighlight %}
 
-What makes it interesting is that because it's first member is of type THFile
+What makes this struct interesting is that because it's first member is of type THFile
 it's actually valid to cast `struct THDiskFile *` to `struct THFile *` and use
-it normally. What's more, because `THDiskFile`'s constructor changes the function pointers
+it normally. What's more, because `THDiskFile`'s constructor fills in the function pointers
 in `file` field's virtual table, it will behave as `THDiskFile` object even when casted to `THFile`!
 
 ### Shared memory
@@ -221,15 +220,16 @@ Anyway, it's definitely a thing worth learning so I will probably write more abo
 
 `TH` declares it's own function for memory allocation called `THAlloc`. It tries
 to allocate a properly aligned chunks if you allocate big blocks and handles
-out-of-memory errors. Before reading torch's source I didn't know about the
-concept of allocators. It's cool that you can pass an Allocator to `THStorage`
-or `THTensor` and construct it not only in the regular heap region, but also
-allocate it in shared memory.
+out-of-memory errors. Before reading Torch's source I didn't know about the
+concept of allocators. They are just small virtual tables providing thier own
+memory management API (alloc, realloc, free). It's cool that you can pass an
+Allocator to `THStorage` or `THTensor` and construct it not only in the regular
+heap region, but also allocate it in the shared memory.
 
 ### Random module
 
-It's natural to have a pseudorandom number generator in all languages, but I've
-never read an implementation of one (ok, except [linear congruential generator](https://en.wikipedia.org/wiki/Linear_congruential_generator)). In
+It's natural to have a pseudorandom number generator in all programming
+languages, but I've never read an implementation of one (ok, except the [linear congruential generator](https://en.wikipedia.org/wiki/Linear_congruential_generator)). In
 `THRandom.c` you can find a full implementation of [Mersenne twister](https://en.wikipedia.org/wiki/Mersenne_Twister),
 which (according to Wikipedia) is a default implementation for R, Python, Ruby,
 PHP, CMU Common Lisp, GLib, MATLAB and some more. There are also several methods
@@ -267,7 +267,7 @@ In this section I will briefly describe most of the functionalities provided by 
 * **THGeneral**
     * implements general utilities
     * contains memory management routines
-    * can hook to an external GC
+    * can notify external GCs
 * **THRandom**
     * implements a random number generator
     * can sample from many distributions
@@ -278,18 +278,72 @@ In this section I will briefly describe most of the functionalities provided by 
 
 ## How to use it
 
-> This section will be expanded soon
+If you want to install `TH` you can either perform a full Torch installation or
+you can follow these steps:
+
+{% highlight bash %}
+# clone Torch repository
+git clone https://github.com/torch/torch7
+mkdir th_build
+cd th_build
+# configure TH build
+cmake ../torch7/lib/TH
+# compile library
+make
+# install shared library and header files
+make install
+{% endhighlight %}
+
+Then, you only have to `#include <TH/TH.h>` in your program and link the library
+during the compilation process (`-lTH`).
 
 ## Example program
 
-> This section will be expanded soon
+To wrap up I just wanted to show you an example program using `TH`. It will
+simply load 10 floats from two files into tensors, compute their dot product
+and add to it a sum of all values in one of them. This is the code:
+
+{% highlight c %}
+#include "TH/TH.h"
+
+int main()
+{
+    THFile *x_file = THDiskFile_new("x", "r", 0);
+    THFile *y_file = THDiskFile_new("y", "r", 0);
+
+    THFloatTensor *x = THFloatTensor_newWithSize1d(10);
+    THFloatTensor *y = THFloatTensor_newWithSize1d(10);
+
+    THFile_readFloat(x_file, x->storage);
+    THFile_readFloat(y_file, y->storage);
+
+    double result = THFloatTensor_dot(x, y) + THFloatTensor_sumall(x);
+
+    printf("%f\n", result);
+
+    THFloatTensor_free(x);
+    THFloatTensor_free(y);
+    THFile_free(x_file);
+    THFile_free(y_file);
+    return 0;
+}
+**
+{% endhighlight %}
+
+All input parsing and possible errors are handled by Torch. Convenient, isn't it?
 
 ## Afterthoughts
 
 I actually enjoy reading other's source code -
 especially if it's well written. If you have some time, then seriously, consider
-picking your favourite library or framework and try to understand how it works, even
+picking your favourite library or framework, and try to understand how it works - even
 the tiniest bits of it. I guarantee that you will find many fascinating things
 and learn many concepts and ways of structuring your code that you had no idea existed.
 I haven't learned that much in such short period of time for a while. I liked
 it so that I'm thinking about doing this on a more regular basis.
+
+`TH` has no documentation at the moment. Since I've already studied most of it's
+code, I'll probably try to write at least a bit. I've used Torch for so long
+that it's time to make some contribution myself.
+
+Thanks for reading! I hope that you liked it!
