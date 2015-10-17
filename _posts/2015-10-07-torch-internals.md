@@ -4,19 +4,19 @@ title:  "A quick tour of Torch internals"
 date:   2015-10-12 20:05:24
 ---
 
-Recently I have been kind of confused. I couldn't find myself
-anything to work on and had no ideas for new projects (apparently I had to wait
-for the new academic year to start, when I don't have much time to work on them).
+Recently, I have been kind of confused. I couldn't find myself
+anything to work on and had no ideas for new projects (apparently, I just had to wait
+for the new academic year to start - I have plenty of ideas now, but no time for them).
 
 Anyway, I often get the impression that many people are using Machine
-Learning libraries as kind of black-boxes with only a high-level API. It's as if they
-weren't interested in how they work, but solely in the output (this is why I like
+Learning libraries as a kind of black-boxes with only a high-level API. It's as if they
+weren't interested at all in how they work, but solely in the output (this is why I like
 Torch so much - it's hackable to the bone). I've been using Torch for a few months
 now and I've always been curious how it's built. This is why I decided to get
 down to it and browse the code of TH library, which is at the core of Torch.
 
 It's really a great thing to do. I'll write more about it in the end of this post,
-but you should seriously consider doing this with your favourite library
+but you should seriously consider doing it with your favourite library
 or framework too.
 
 Torch's source is written in plain C, which was very pleasing for me. I don't
@@ -28,11 +28,11 @@ grasp what exactly happens at any moment.
 
 You can find the `TH` library in two places:
 
-* [In it's standalone repository](https://github.com/torch/TH) (git subtree of torch7; outdated at the time of writing)
+* [In its standalone repository](https://github.com/torch/TH) (git subtree of torch7; outdated at the time of writing)
 * [In torch7 repository](https://github.com/torch/torch7) in `lib/TH` folder (always up to date)
 
 The folder structure is very simple. There are some cmake tests and definitions
-in `cmake` folder while the code is located both in `general` folder and at the repo root.
+in `cmake` directory while the code is located both in `general` directory and at the repo root.
 
 ## Interesting findings
 
@@ -41,8 +41,8 @@ files I'd like to point out some really cool techniques that I've found in the i
 
 ### Code generation
 
-First thing that appeared really strange was that many files existed both in the
-root folder as well as in `generic`. If you opened them you would quickly notice
+First thing that appeared really strange to me was that many files existed both in the
+root folder as well as in `generic`. If you opened them, you would quickly notice
 that copies in `general` contain the actual code, while at the root they all look
 very similar. Here is `THStorage.c` for example:
 
@@ -95,9 +95,9 @@ Which continued for a few more types. At first I was puzzled, but then I suddenl
 realized what it does and how brilliant this is! There are no templates in C, but
 objects like THStorage should be available for different types. It would be a
 terrible waste to repeat the same implementation with just a few words replaced
-and this is what this piece archieves! In generic files you can see
+and this is what this piece achieves! In generic files you can see
 variables of type `real` all over the place. At first it was obvious to me that
-it's probably a matter of some compile time optimizations wether it was chosen to
+it's probably a matter of some compile time optimizations whether it was chosen to
 be a float or a double, but apparently it's different - it allows code generation
 for many other types too!
 
@@ -191,7 +191,7 @@ I had little knowledge about UNIX process management and threading until now, wh
 I took up an operating systems course at my university, so it was really interesting
 to learn about `mmap` (maps a file to memory, so you can use it like an array)
 and to see how memory can be shared between processes with `shm_open`. I even
-wrote a piece of code to try it out. You can find it [in here](https://github.com/apaszke/apaszke.github.io/tree/master/assets/posts/torch-internals/shared_mem).
+wrote a piece of code to try it out. You can find it [here](https://github.com/apaszke/apaszke.github.io/tree/master/assets/posts/torch-internals/shared_mem).
 
 ### SIMD
 
@@ -334,7 +334,7 @@ All input parsing and possible errors are handled by Torch. Convenient, isn't it
 ## Afterthoughts
 
 I actually enjoy reading other's source code -
-especially if it's well written. If you have some time, then seriously, consider
+especially if it's well written. If you have some spare time, then seriously, consider
 picking your favourite library or framework, and try to understand how it works - even
 the tiniest bits of it. I guarantee that you will find many fascinating things
 and learn many concepts and ways of structuring your code that you had no idea existed.
