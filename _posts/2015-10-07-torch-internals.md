@@ -107,7 +107,7 @@ Clever usage of macros also makes the generic files more readable.
 Take this example from `generic/THStorage.c`:
 
 {% highlight c %}
-real* THStorage_(data)(const THStorage \*self)
+real* THStorage_(data)(const THStorage *self)
 {% endhighlight %}
 
 It looks nice, but what about name conflicts for different types? It can't be `THStorage`
@@ -145,7 +145,7 @@ Let's start with the private header file.
 {% highlight c %}
 struct THFile__
 {
-    struct THFileVTable \*vtable;
+    struct THFileVTable *vtable;
 
     int isQuiet;
     ...
@@ -153,12 +153,12 @@ struct THFile__
 
 struct THFileVTable
 {
-    int (\*isOpened)(THFile \*self);
+    int (*isOpened)(THFile *self);
 
-    long (\*readByte)(THFile \*self, unsigned char \*data, long n);
-    long (\*readChar)(THFile \*self, char \*data, long n);
-    long (\*readShort)(THFile \*self, short \*data, long n);
-    long (\*readInt)(THFile \*self, int \*data, long n);
+    long (*readByte)(THFile *self, unsigned char *data, long n);
+    long (*readChar)(THFile *self, char *data, long n);
+    long (*readShort)(THFile *self, short *data, long n);
+    long (*readInt)(THFile *self, int *data, long n);
     ...
 };
 {% endhighlight %}
@@ -173,8 +173,8 @@ typedef struct THDiskFile__
 {
     THFile file;
 
-    FILE \*handle;
-    char \*name;
+    FILE *handle;
+    char *name;
     int isNativeEncoding;
 
 } THDiskFile;
@@ -327,7 +327,6 @@ int main()
     THFile_free(y_file);
     return 0;
 }
-**
 {% endhighlight %}
 
 All input parsing and possible errors are handled by Torch. Convenient, isn't it?
