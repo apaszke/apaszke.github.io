@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "A quick tour of Torch internals"
-date:   2015-10-12 20:05:24
+date:   2015-10-18 20:05:24
 ---
 
 Recently, I have been kind of confused. I couldn't find myself
