@@ -19,10 +19,11 @@ It's really a great thing to do. I'll write more about it in the end of this pos
 but you should seriously consider doing it with your favourite library
 or framework too.
 
-Torch's source is written in plain C, which was very pleasing for me. I don't
+Torch's source is written in plain C, which was very pleasing to me. I don't
 really like many C++ features and although I find it very powerful and flexible,
 it often seems confusing. C's extremely minimal syntax allows you to read and quickly
-grasp what exactly happens at any moment.
+grasp what exactly happens at any moment. However, if C++ is the way to go
+for you, there is also a wrapper around TH called [thpp](https://github.com/facebook/thpp).
 
 ## Where can you get it?
 
@@ -32,7 +33,7 @@ You can find the `TH` library in two places:
 * [In torch7 repository](https://github.com/torch/torch7) in `lib/TH` folder (always up to date)
 
 The folder structure is very simple. There are some cmake tests and definitions
-in `cmake` directory while the code is located both in `general` directory and at the repo root.
+in `cmake` directory while the code is located both in `generic` directory and at the repo root.
 
 ## Interesting findings
 
@@ -43,7 +44,7 @@ files I'd like to point out some really cool techniques that I've found in the i
 
 First thing that appeared really strange to me was that many files existed both in the
 root folder as well as in `generic`. If you opened them, you would quickly notice
-that copies in `general` contain the actual code, while at the root they all look
+that copies in `generic` contain the actual code, while at the root they all look
 very similar. Here is `THStorage.c` for example:
 
 {% highlight c %}
@@ -164,7 +165,7 @@ struct THFileVTable
 {% endhighlight %}
 
 You can see that it defines a [virtual method table](https://en.wikipedia.org/wiki/Virtual_method_table)
-with pointers to funcions that `THFile` subclasses will have to implement
+with pointers to functions that `THFile` subclasses will have to implement
 (`THFile` is an abstract class - it has no constructors). Other structs are
 defined as such:
 
@@ -221,7 +222,7 @@ Anyway, it's definitely a thing worth learning so I will probably write more abo
 `TH` declares it's own function for memory allocation called `THAlloc`. It tries
 to allocate a properly aligned chunks if you allocate big blocks and handles
 out-of-memory errors. Before reading Torch's source I didn't know about the
-concept of allocators. They are just small virtual tables providing thier own
+concept of allocators. They are just small virtual tables providing their own
 memory management API (alloc, realloc, free). It's cool that you can pass an
 Allocator to `THStorage` or `THTensor` and construct it not only in the regular
 heap region, but also allocate it in the shared memory.
@@ -247,7 +248,7 @@ In this section I will briefly describe most of the functionalities provided by 
     * multiplatform implementation of atomic operations
 * **THTensor**
     * defines a general Tensor type
-    * supports lots of indexing, linear algebra and general math operations
+    * supports lots of indexing, linear algebra and math operations
     * available for all primitive datatypes (`TH<type>Tensor`, e.g. `THFloatTensor`)
 * **THBlas**
     * wraps BLAS library for use in `THTensor`
