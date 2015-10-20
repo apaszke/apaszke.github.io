@@ -14,10 +14,10 @@
     var host = "apaszke.github.io"
     if (window.location.host == host
         && window.location.protocol != "https:"
-        && window.location.pathname == "/torch-internals.html") {
+        && window.location.pathname != "/lstm-explained.html") {
       window.location.protocol = "https:";
-    } else if (window.location.pathname != "/torch-internals.html") {
-      // window.location.protocol = "http:";
+    } else if (window.location.pathname == "/lstm-explained.html") {
+      window.location.protocol = "http:";
     }
   </script>
 </head>
