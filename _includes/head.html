@@ -12,8 +12,12 @@
 
   <script>
     var host = "apaszke.github.io"
-    if (window.location.host == host && window.location.protocol != "https:") {
-      window.location.protocol = "https:"
+    if (window.location.host == host
+        && window.location.protocol != "https:"
+        && window.location.pathname != "/lstm-explained.html") {
+      window.location.protocol = "https:";
+    } else if (window.location.pathname == "/lstm-explained.html") {
+      window.location.protocol = "http:";
     }
   </script>
 </head>
